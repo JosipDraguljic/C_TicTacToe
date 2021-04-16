@@ -11,32 +11,27 @@ int main()
     bool start = true;
     int UIRow = 0, UIColumn = 0; //User Input
 
-    for(int IndexRow = 0; IndexRow < MAX_ROW; IndexRow++)
+   while(1)
     {
-        for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
+        for(int IndexRow = 0; IndexRow < MAX_ROW; IndexRow++)
         {
-            printf("| %c |", TicTacToe[IndexRow][IndexColumn]);
+            for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
+            {
+                printf("| %c |", TicTacToe[IndexRow][IndexColumn]);
+                //start = !start;
+            }
+            printf("\n");
         }
-        printf("\n");
-    }
 
-    printf("Choose Row: ");
-    scanf("%d", &UIRow);
-    printf("Choose Column: ");
-    scanf("%d", &UIColumn);
+        printf("Choose Row: ");
+        scanf("%d", &UIRow);
+        printf("Choose Column: ");
+        scanf("%d", &UIColumn);
 
-    TicTacToe[UIRow][UIColumn] = (start)? X : O;
-    start = !start;
+        TicTacToe[UIRow][UIColumn] = (start)? X : O;
+        start = !start;
 
-    system("cls");
-
-    for(int IndexRow = 0; IndexRow < MAX_ROW; IndexRow++)
-    {
-        for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
-        {
-            printf("| %c |", TicTacToe[IndexRow][IndexColumn]);
-        }
-        printf("\n");
+        system("cls");
     }
 
     return 0;
