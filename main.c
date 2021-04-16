@@ -12,8 +12,9 @@ int main()
     char TicTacToe[MAX_ROW][MAX_COLUMN] = {}, X = 88, O = 79, winner = '\0';
     bool start = true;
     int UIRow = 0, UIColumn = 0; //User Input
+    int countSpotsFilled = 0;
 
-   while(1)
+   while(countSpotsFilled<9)
     {
         do
         {
@@ -46,14 +47,19 @@ int main()
         TicTacToe[UIRow][UIColumn] = (start)? X : O;
         start = !start;
         winner = CheckWinner(TicTacToe);
+        system("cls");
+        countSpotsFilled++;
 
         if(winner != 'n' && winner != '\0')
         {
             printf("\n***%c is the winner***\n", winner);
             system("pause");
         }
+        else if(countSpotsFilled>=9)
+        {
+            printf("game finished with no winners");
+        }
 
-        system("cls");
     }
 
     return 0;
