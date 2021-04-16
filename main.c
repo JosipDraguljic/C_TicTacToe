@@ -6,12 +6,14 @@
 
 #define MAX_ROW 3
 #define MAX_COLUMN 3
+#define MAX_NAMELENGTH 20
 
 char CheckWinner(char Arr[MAX_ROW][MAX_COLUMN]);
 void userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start);
 int EndGame(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled);
 void FreshStart(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled);
 void DrawGame(char Arr[MAX_ROW][MAX_COLUMN]);
+void SaveGame(char _winner);
 
 int main()
 {
@@ -21,7 +23,8 @@ int main()
 
     do
     {
-        printf("Who starts first: ");
+        system("cls");
+        printf("Who starts first(x/y): ");
         scanf("%c", &startingPlayer);
     }while(tolower(startingPlayer) != 'x' && tolower(startingPlayer) != 'o');
 
@@ -132,6 +135,7 @@ int EndGame(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled)
     {
         fflush(stdin);
         printf("\n***%c is the winner***\n", winner);
+        SaveGame(winner);
         printf("Do you wish to start new game?(y/n): ");
         scanf("%c", &NewGame);
         fflush(stdin);
@@ -175,4 +179,43 @@ void DrawGame(char Arr[MAX_ROW][MAX_COLUMN])
             }
             printf("\n");
         }
+}
+
+void SaveGame(char _winner)
+{
+    char firstPlayer[MAX_NAMELENGTH] = {};
+    char secondPlayer[MAX_NAMELENGTH] = {};
+    char pX = 'X', pO = 'O';
+
+    printf("Who was X: ");
+    fgets(firstPlayer, MAX_NAMELENGTH, stdin);
+
+    printf("Who was O: ");
+    fgets(secondPlayer, MAX_NAMELENGTH, stdin);
+
+    if(firstPlayer[(strlen(firstPlayer)-1)] == '\n')
+    {
+        firstPlayer[(strlen(firstPlayer)-1)] = 0;
+    }
+    if(secondPlayer[(strlen(secondPlayer)-1)] == '\n')
+    {
+        secondPlayer[(strlen(secondPlayer)-1)] = 0;
+    }
+
+    if(pX == _winner)
+    {
+        printf("%s(%c) has won over %s(%c)\n", firstPlayer, pX, secondPlayer, pO);
+    }
+    else if(pO == _winner)
+    {
+        printf("%s(%c) has won over %s(%c)\n", secondPlayer, pO, firstPlayer, pX);
+    }
+    else
+    {
+        printf("its a tie between %s and %s\n", firstPlayer, secondPlayer);
+    }
+    system("pause");
+    fflush(stdin);
+    system("cls");
+
 }
