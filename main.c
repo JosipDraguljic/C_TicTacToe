@@ -13,20 +13,33 @@ int main()
 
    while(1)
     {
-        for(int IndexRow = 0; IndexRow < MAX_ROW; IndexRow++)
+        do
         {
-            for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
+            for(int indexRow = 0; indexRow < MAX_ROW; indexRow++)
             {
-                printf("| %c |", TicTacToe[IndexRow][IndexColumn]);
-                //start = !start;
+                for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
+                {
+                    printf("| %c |", TicTacToe[IndexRow][IndexColumn]);
+                    //start = !start;
+                }
+                printf("\n");
             }
-            printf("\n");
-        }
 
-        printf("Choose Row: ");
-        scanf("%d", &UIRow);
-        printf("Choose Column: ");
-        scanf("%d", &UIColumn);
+            do
+            {
+                printf("Choose Row: ");
+                scanf("%d", &UIRow);
+                --UIRow;
+            }while(UIRow < 0 || UIRow > 2);
+
+            do
+            {
+                printf("Choose Column: ");
+                scanf("%d", &UIColumn);
+                --UIColumn;
+            }while(UIColumn < 0 || UIColumn > 2);
+            system("cls");
+        }while(TicTacToe[UIRow][UIColumn] == X || TicTacToe[UIRow][UIColumn] == O);
 
         TicTacToe[UIRow][UIColumn] = (start)? X : O;
         start = !start;
