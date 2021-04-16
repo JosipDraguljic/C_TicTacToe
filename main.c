@@ -9,14 +9,32 @@ int main()
 {
     char TicTacToe[MAX_ROW][MAX_COLUMN] = {}, X = 88, O = 79;
     bool start = true;
+    int UIRow = 0, UIColumn = 0; //User Input
 
     for(int IndexRow = 0; IndexRow < MAX_ROW; IndexRow++)
     {
         for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
         {
-            TicTacToe[IndexRow][IndexColumn] = (start)? X : O;
             printf("| %c |", TicTacToe[IndexRow][IndexColumn]);
-            start = !start;
+        }
+        printf("\n");
+    }
+
+    printf("Choose Row: ");
+    scanf("%d", &UIRow);
+    printf("Choose Column: ");
+    scanf("%d", &UIColumn);
+
+    TicTacToe[UIRow][UIColumn] = (start)? X : O;
+    start = !start;
+
+    system("cls");
+
+    for(int IndexRow = 0; IndexRow < MAX_ROW; IndexRow++)
+    {
+        for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
+        {
+            printf("| %c |", TicTacToe[IndexRow][IndexColumn]);
         }
         printf("\n");
     }
