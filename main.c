@@ -8,7 +8,7 @@
 #define MAX_COLUMN 3
 
 char CheckWinner(char Arr[MAX_ROW][MAX_COLUMN]);
-void userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start);
+int userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start);
 int EndGame(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled);
 void FreshStart(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled);
 void DrawGame(char Arr[MAX_ROW][MAX_COLUMN]);
@@ -21,18 +21,25 @@ int main()
 
     do
     {
-        printf("Who starts first: ");
+        printf("Who starts first(you can quit game anytime by entering letter 'q'): ");
         scanf("%c", &startingPlayer);
-    }while(tolower(startingPlayer) != 'x' && tolower(startingPlayer) != 'o');
+    }while((tolower(startingPlayer) != 'x' && tolower(startingPlayer) != 'o') && tolower(startingPlayer)!='q');
 
     if('o' == tolower(startingPlayer))
     {
         start = false;
     }
+    else if('q' == tolower(startingPlayer))
+    {
+        return 0;
+    }
 
    while(countSpotsFilled<9)
     {
-        userInput(TicTacToe, start);
+        if(userInput(TicTacToe, start)==0)
+        {
+            break;
+        }
         start = !start;
         if(EndGame(TicTacToe, &countSpotsFilled) == 0)
         {
@@ -83,7 +90,7 @@ char CheckWinner(char Arr[MAX_ROW][MAX_COLUMN])
         return 'n';
     }
 }
-void userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start)
+int userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start)
 {
     int UIRow = 0, UIColumn = 0; //User Input
 
@@ -96,6 +103,10 @@ void userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start)
             printf("Choose Row: ");
             while(scanf("%d", &UIRow)!=1)
             {
+                if(tolower(getchar())=='q')
+                {
+                    return 0;
+                }
                 system("cls");
                 DrawGame(Arr);
                 printf("Choose Row: ");
@@ -109,6 +120,10 @@ void userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start)
             printf("Choose Column: ");
             while(scanf("%d", &UIColumn)!=1)
             {
+                if(tolower(getchar())=='q')
+                {
+                    return 0;
+                }
                 system("cls");
                 DrawGame(Arr);
                 printf("Choose Column: ");
@@ -121,6 +136,7 @@ void userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start)
 
     Arr[UIRow][UIColumn] = (start)? 88 : 79;
     system("cls");
+    return 1;
 }
 
 int EndGame(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled)
