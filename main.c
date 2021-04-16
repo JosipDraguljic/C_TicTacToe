@@ -11,6 +11,7 @@ char CheckWinner(char Arr[MAX_ROW][MAX_COLUMN]);
 void userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start);
 int EndGame(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled);
 void FreshStart(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled);
+void DrawGame(char Arr[MAX_ROW][MAX_COLUMN]);
 
 int main()
 {
@@ -77,27 +78,31 @@ void userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start)
 
     do
     {
-        for(int IndexRow = 0; IndexRow < MAX_ROW; IndexRow++)
-        {
-            for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
-            {
-                printf("| %c |", Arr[IndexRow][IndexColumn]);
-                //start = !start;
-            }
-            printf("\n");
-        }
+        DrawGame(Arr);
 
         do
         {
             printf("Choose Row: ");
-            scanf("%d", &UIRow);
+            while(scanf("%d", &UIRow)!=1)
+            {
+                system("cls");
+                DrawGame(Arr);
+                printf("Choose Row: ");
+                fflush(stdin);
+            }
             --UIRow;
         }while(UIRow < 0 || UIRow > 2);
 
         do
         {
             printf("Choose Column: ");
-            scanf("%d", &UIColumn);
+            while(scanf("%d", &UIColumn)!=1)
+            {
+                system("cls");
+                DrawGame(Arr);
+                printf("Choose Column: ");
+                fflush(stdin);
+            }
             --UIColumn;
         }while(UIColumn < 0 || UIColumn > 2);
         system("cls");
@@ -148,4 +153,15 @@ void FreshStart(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled)
 {
     *countSpotsFilled = 0;
     memset(Arr, 0, sizeof(Arr[0][0])*MAX_ROW*MAX_COLUMN);
+}
+void DrawGame(char Arr[MAX_ROW][MAX_COLUMN])
+{
+        for(int IndexRow = 0; IndexRow < MAX_ROW; IndexRow++)
+        {
+            for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
+            {
+                printf("| %c |", Arr[IndexRow][IndexColumn]);
+            }
+            printf("\n");
+        }
 }
