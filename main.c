@@ -15,9 +15,20 @@ void DrawGame(char Arr[MAX_ROW][MAX_COLUMN]);
 
 int main()
 {
-    char TicTacToe[MAX_ROW][MAX_COLUMN] = {};
+    char TicTacToe[MAX_ROW][MAX_COLUMN] = {}, startingPlayer;
     bool start = true;
     int countSpotsFilled = 0;
+
+    do
+    {
+        printf("Who starts first: ");
+        scanf("%c", &startingPlayer);
+    }while(tolower(startingPlayer) != 'x' && tolower(startingPlayer) != 'o');
+
+    if('o' == tolower(startingPlayer))
+    {
+        start = false;
+    }
 
    while(countSpotsFilled<9)
     {
