@@ -5,9 +5,11 @@
 #define MAX_ROW 3
 #define MAX_COLUMN 3
 
+char CheckWinner(char Arr[MAX_ROW][MAX_COLUMN]);
+
 int main()
 {
-    char TicTacToe[MAX_ROW][MAX_COLUMN] = {}, X = 88, O = 79;
+    char TicTacToe[MAX_ROW][MAX_COLUMN] = {}, X = 88, O = 79, winner = '\0';
     bool start = true;
     int UIRow = 0, UIColumn = 0; //User Input
 
@@ -15,7 +17,7 @@ int main()
     {
         do
         {
-            for(int indexRow = 0; indexRow < MAX_ROW; indexRow++)
+            for(int IndexRow = 0; IndexRow < MAX_ROW; IndexRow++)
             {
                 for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
                 {
@@ -43,9 +45,56 @@ int main()
 
         TicTacToe[UIRow][UIColumn] = (start)? X : O;
         start = !start;
+        winner = CheckWinner(TicTacToe);
+
+        if(winner != 'n' && winner != '\0')
+        {
+            printf("\n***%c is the winner***\n", winner);
+            system("pause");
+        }
 
         system("cls");
     }
 
     return 0;
+}
+
+char CheckWinner(char Arr[MAX_ROW][MAX_COLUMN])
+{
+    if((Arr[0][0] == Arr[0][1]) && (Arr[0][0] == Arr[0][2]))
+    {
+        return Arr[0][0];
+    }
+    else if((Arr[1][0] == Arr[1][1]) && (Arr[1][0] == Arr[1][2]))
+    {
+        return Arr[1][0];
+    }
+    else if((Arr[2][0] == Arr[2][1]) && (Arr[2][0] == Arr[2][2]))
+    {
+        return Arr[2][0];
+    }
+    else if((Arr[0][0] == Arr[1][0]) && (Arr[0][0] == Arr[2][0]))
+    {
+        return Arr[0][0];
+    }
+    else if((Arr[0][1] == Arr[1][1]) && (Arr[0][1] == Arr[2][1]))
+    {
+        return Arr[0][1];
+    }
+    else if((Arr[0][2] == Arr[1][2]) && (Arr[0][2] == Arr[2][2]))
+    {
+        return Arr[0][2];
+    }
+    else if((Arr[0][0] == Arr[1][1]) && (Arr[0][0] == Arr[2][2]))
+    {
+        return Arr[0][0];
+    }
+    else if((Arr[0][2] == Arr[1][1]) && (Arr[0][2] == Arr[2][0]))
+    {
+        return Arr[0][2];
+    }
+    else
+    {
+        return 'n';
+    }
 }
