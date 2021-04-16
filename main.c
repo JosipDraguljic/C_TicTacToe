@@ -24,7 +24,7 @@ int main()
     do
     {
         system("cls");
-        printf("Who starts first(x/y): ");
+        printf("Who starts first(x/o): ");
         scanf("%c", &startingPlayer);
     }while(tolower(startingPlayer) != 'x' && tolower(startingPlayer) != 'o');
 
@@ -135,17 +135,38 @@ int EndGame(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled)
     {
         fflush(stdin);
         printf("\n***%c is the winner***\n", winner);
-        SaveGame(winner);
+        printf("Do you wish to save the game?(y/n): ");
+        if(tolower(getchar()) == 'y')
+        {
+            fflush(stdin);
+            SaveGame(winner);
+        }
+        fflush(stdin);
         printf("Do you wish to start new game?(y/n): ");
-        scanf("%c", &NewGame);
+        do
+        {
+            scanf("%c", &NewGame);
+            fflush(stdin);
+        }while(tolower(NewGame) != 'y' && tolower(NewGame)!='n');
         fflush(stdin);
     }
     else if(*countSpotsFilled>=9)
     {
         fflush(stdin);
         printf("game finished with no winners");
+        printf("Do you wish to save the game?(y/n): ");
+        if(tolower(getchar()) == 'y')
+        {
+            fflush(stdin);
+            SaveGame(winner);
+        }
+        fflush(stdin);
         printf("Do you wish to start new game?(y/n): ");
-        scanf("%c", &NewGame);
+        do
+        {
+            scanf("%c", &NewGame);
+            fflush(stdin);
+        }while(tolower(NewGame) != 'y' && tolower(NewGame)!='n');
         fflush(stdin);
     }
 
@@ -186,6 +207,7 @@ void SaveGame(char _winner)
     char firstPlayer[MAX_NAMELENGTH] = {};
     char secondPlayer[MAX_NAMELENGTH] = {};
     char pX = 'X', pO = 'O';
+    FILE *fPointer;
 
     printf("Who was X: ");
     fgets(firstPlayer, MAX_NAMELENGTH, stdin);
@@ -204,15 +226,21 @@ void SaveGame(char _winner)
 
     if(pX == _winner)
     {
-        printf("%s(%c) has won over %s(%c)\n", firstPlayer, pX, secondPlayer, pO);
+            fPointer = fopen("StoredGameResults.txt", "a");
+            fprintf(fPointer, "\n%s(%c) has won over %s(%c)\n", firstPlayer, pX, secondPlayer, pO);
+            fclose(fPointer);
     }
     else if(pO == _winner)
     {
-        printf("%s(%c) has won over %s(%c)\n", secondPlayer, pO, firstPlayer, pX);
+        fPointer = fopen("StoredGameResults.txt", "a");
+        fprintf(fPointer, "\n%s(%c) has won over %s(%c)\n", secondPlayer, pO, firstPlayer, pX);
+        fclose(fPointer);
     }
     else
     {
-        printf("its a tie between %s and %s\n", firstPlayer, secondPlayer);
+        fPointer = fopen("StoredGameResults.txt", "a");
+        fprintf(fPointer, "\nits a tie between %s and %s\n", firstPlayer, secondPlayer);
+        fclose(fPointer);
     }
     system("pause");
     fflush(stdin);
