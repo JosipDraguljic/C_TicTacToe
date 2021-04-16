@@ -1,65 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include<stdbool.h>
+#include <stdbool.h>
+#include <ctype.h>
+#include <string.h>
 
 #define MAX_ROW 3
 #define MAX_COLUMN 3
 
 char CheckWinner(char Arr[MAX_ROW][MAX_COLUMN]);
+void userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start);
+int EndGame(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled);
+void FreshStart(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled);
 
 int main()
 {
-    char TicTacToe[MAX_ROW][MAX_COLUMN] = {}, X = 88, O = 79, winner = '\0';
+    char TicTacToe[MAX_ROW][MAX_COLUMN] = {};
     bool start = true;
-    int UIRow = 0, UIColumn = 0; //User Input
     int countSpotsFilled = 0;
 
    while(countSpotsFilled<9)
     {
-        do
-        {
-            for(int IndexRow = 0; IndexRow < MAX_ROW; IndexRow++)
-            {
-                for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
-                {
-                    printf("| %c |", TicTacToe[IndexRow][IndexColumn]);
-                    //start = !start;
-                }
-                printf("\n");
-            }
-
-            do
-            {
-                printf("Choose Row: ");
-                scanf("%d", &UIRow);
-                --UIRow;
-            }while(UIRow < 0 || UIRow > 2);
-
-            do
-            {
-                printf("Choose Column: ");
-                scanf("%d", &UIColumn);
-                --UIColumn;
-            }while(UIColumn < 0 || UIColumn > 2);
-            system("cls");
-        }while(TicTacToe[UIRow][UIColumn] == X || TicTacToe[UIRow][UIColumn] == O);
-
-        TicTacToe[UIRow][UIColumn] = (start)? X : O;
+        userInput(TicTacToe, start);
         start = !start;
-        winner = CheckWinner(TicTacToe);
-        system("cls");
+        if(EndGame(TicTacToe, &countSpotsFilled) == 0)
+        {
+            break;
+        }
         countSpotsFilled++;
-
-        if(winner != 'n' && winner != '\0')
-        {
-            printf("\n***%c is the winner***\n", winner);
-            system("pause");
-        }
-        else if(countSpotsFilled>=9)
-        {
-            printf("game finished with no winners");
-        }
-
     }
 
     return 0;
@@ -103,4 +70,82 @@ char CheckWinner(char Arr[MAX_ROW][MAX_COLUMN])
     {
         return 'n';
     }
+}
+void userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start)
+{
+    int UIRow = 0, UIColumn = 0; //User Input
+
+    do
+    {
+        for(int IndexRow = 0; IndexRow < MAX_ROW; IndexRow++)
+        {
+            for(int IndexColumn = 0; IndexColumn < MAX_COLUMN; IndexColumn++)
+            {
+                printf("| %c |", Arr[IndexRow][IndexColumn]);
+                //start = !start;
+            }
+            printf("\n");
+        }
+
+        do
+        {
+            printf("Choose Row: ");
+            scanf("%d", &UIRow);
+            --UIRow;
+        }while(UIRow < 0 || UIRow > 2);
+
+        do
+        {
+            printf("Choose Column: ");
+            scanf("%d", &UIColumn);
+            --UIColumn;
+        }while(UIColumn < 0 || UIColumn > 2);
+        system("cls");
+    }while(Arr[UIRow][UIColumn] == 88 || Arr[UIRow][UIColumn] == 79);
+
+    Arr[UIRow][UIColumn] = (start)? 88 : 79;
+    system("cls");
+}
+
+int EndGame(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled)
+{
+    char winner = '\0', NewGame = '\0';
+
+    winner = CheckWinner(Arr);
+    if(winner != 'n' && winner != '\0')
+    {
+        fflush(stdin);
+        printf("\n***%c is the winner***\n", winner);
+        printf("Do you wish to start new game?(y/n): ");
+        scanf("%c", &NewGame);
+        fflush(stdin);
+    }
+    else if(*countSpotsFilled>=9)
+    {
+        fflush(stdin);
+        printf("game finished with no winners");
+        printf("Do you wish to start new game?(y/n): ");
+        scanf("%c", &NewGame);
+        fflush(stdin);
+    }
+
+    if(tolower(NewGame) == 'y')
+    {
+        FreshStart(Arr, &countSpotsFilled);
+        return 1;
+    }
+    else if(tolower(NewGame) == 'n')
+    {
+        return 0;
+    }
+    else
+    {
+        return 2;
+    }
+}
+
+void FreshStart(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled)
+{
+    *countSpotsFilled = 0;
+    memset(Arr, 0, sizeof(Arr[0][0])*MAX_ROW*MAX_COLUMN);
 }
