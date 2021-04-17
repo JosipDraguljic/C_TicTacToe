@@ -21,6 +21,7 @@ int main()
     bool start = true;
     int countSpotsFilled = 0;
 
+
     do
     {
         system("cls");
