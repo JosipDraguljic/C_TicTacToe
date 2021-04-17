@@ -6,12 +6,14 @@
 
 #define MAX_ROW 3
 #define MAX_COLUMN 3
+#define MAX_NAMELENGTH 20
 
 char CheckWinner(char Arr[MAX_ROW][MAX_COLUMN]);
 int userInput(char Arr[MAX_ROW][MAX_COLUMN], bool start);
 int EndGame(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled);
 void FreshStart(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled);
 void DrawGame(char Arr[MAX_ROW][MAX_COLUMN]);
+void SaveGame(char _winner);
 
 int main()
 {
@@ -19,9 +21,11 @@ int main()
     bool start = true;
     int countSpotsFilled = 0;
 
+
     do
     {
-        printf("Who starts first(you can quit game anytime by entering letter 'q'): ");
+        system("cls");
+        printf("Who starts first(x/o)-q- to quit: ");
         scanf("%c", &startingPlayer);
     }while((tolower(startingPlayer) != 'x' && tolower(startingPlayer) != 'o') && tolower(startingPlayer)!='q');
 
@@ -148,16 +152,38 @@ int EndGame(char Arr[MAX_ROW][MAX_COLUMN], int *countSpotsFilled)
     {
         fflush(stdin);
         printf("\n***%c is the winner***\n", winner);
+        printf("Do you wish to save the game?(y/n): ");
+        if(tolower(getchar()) == 'y')
+        {
+            fflush(stdin);
+            SaveGame(winner);
+        }
+        fflush(stdin);
         printf("Do you wish to start new game?(y/n): ");
-        scanf("%c", &NewGame);
+        do
+        {
+            scanf("%c", &NewGame);
+            fflush(stdin);
+        }while(tolower(NewGame) != 'y' && tolower(NewGame)!='n');
         fflush(stdin);
     }
     else if(*countSpotsFilled>=9)
     {
         fflush(stdin);
         printf("game finished with no winners");
+        printf("Do you wish to save the game?(y/n): ");
+        if(tolower(getchar()) == 'y')
+        {
+            fflush(stdin);
+            SaveGame(winner);
+        }
+        fflush(stdin);
         printf("Do you wish to start new game?(y/n): ");
-        scanf("%c", &NewGame);
+        do
+        {
+            scanf("%c", &NewGame);
+            fflush(stdin);
+        }while(tolower(NewGame) != 'y' && tolower(NewGame)!='n');
         fflush(stdin);
     }
 
@@ -191,4 +217,50 @@ void DrawGame(char Arr[MAX_ROW][MAX_COLUMN])
             }
             printf("\n");
         }
+}
+
+void SaveGame(char _winner)
+{
+    char firstPlayer[MAX_NAMELENGTH] = {};
+    char secondPlayer[MAX_NAMELENGTH] = {};
+    char pX = 'X', pO = 'O';
+    FILE *fPointer;
+
+    printf("Who was X: ");
+    fgets(firstPlayer, MAX_NAMELENGTH, stdin);
+
+    printf("Who was O: ");
+    fgets(secondPlayer, MAX_NAMELENGTH, stdin);
+
+    if(firstPlayer[(strlen(firstPlayer)-1)] == '\n')
+    {
+        firstPlayer[(strlen(firstPlayer)-1)] = 0;
+    }
+    if(secondPlayer[(strlen(secondPlayer)-1)] == '\n')
+    {
+        secondPlayer[(strlen(secondPlayer)-1)] = 0;
+    }
+
+    if(pX == _winner)
+    {
+            fPointer = fopen("StoredGameResults.txt", "a");
+            fprintf(fPointer, "\n%s(%c) has won over %s(%c)\n", firstPlayer, pX, secondPlayer, pO);
+            fclose(fPointer);
+    }
+    else if(pO == _winner)
+    {
+        fPointer = fopen("StoredGameResults.txt", "a");
+        fprintf(fPointer, "\n%s(%c) has won over %s(%c)\n", secondPlayer, pO, firstPlayer, pX);
+        fclose(fPointer);
+    }
+    else
+    {
+        fPointer = fopen("StoredGameResults.txt", "a");
+        fprintf(fPointer, "\nits a tie between %s and %s\n", firstPlayer, secondPlayer);
+        fclose(fPointer);
+    }
+    system("pause");
+    fflush(stdin);
+    system("cls");
+
 }
